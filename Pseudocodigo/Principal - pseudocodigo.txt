@@ -1,0 +1,98 @@
+Accion principal es
+  Ambiente
+    fecha = registro
+      anio: n(4)
+      mes: n(2)
+      dia: n(2)
+    fin_registro
+    temperaturas = registro
+      valortemp: (-30..120);
+      fechatoma: fecha
+    fin_registro
+    temperaturas_agosto = registro
+      valortemp: (-30..120);
+      dia: n(2)
+    fin_registro
+    temp: archivo de temperaturas
+    t: temperaturas
+    conttempinf, conttemptot, acutemptot: n(3)
+    tempsal: archivo de temperaturas_agosto
+    ta: temperaturas_agosto
+    Función asterisco(n: (-30..120)) es
+      Si n<0 entonces
+        n:= -1*n
+      fin_si
+      Segun n MOD 3 hacer
+        0: asterisco:= n DIV 3
+        1: asterisco:= (n-1) DIV 3
+        2: asterisco:= (n-2) DIV 3
+      fin_segun
+    fin_funcion
+  Proceso
+    Abrir E/(temp)
+    Leer(temp, t)
+    Abrir /S(tempsal)
+    Esc("   -30       0        30        60        90      120")
+    conttempinf:= 0
+    conttemptot:= 0
+    acutemptot:= 0
+    Mientras NFDA(temp) hacer
+      Si t.valortemp>-10 y t.valortemp<100 entonces
+        Esc(" ") //1 espacios
+      Contrario
+        si t.valortemp>-1 o t.valortemp<10 entonces
+          Esc("  ") //2 espacio
+        fin_si
+      fin_si
+      Esc(t.valortemp)
+      asterisco(t.valortemp)
+      si t.valortemp<0 entonces
+        conttempinf:= conttempinf + 1
+        para i=10 hasta asterisco hacer
+          Esc(" ")
+        fin_para
+        para i=0 hasta asterisco hacer
+          Esc("*")
+        fin_para
+      Contrario
+        para i=0 hasta 10 hacer
+          Esc(" ")
+        fin_para
+      fin_si
+      Esc("|")
+      si t.valortemp>=0 entonces
+        para i=0 hasta asterisco hacer
+          Esc("*")
+        fin_para
+        para i=39 hasta asterisco hacer //No es 40 porque el 40avo es el "|" ingresado previamente
+          Esc(" ")
+        fin_para
+      Contrario
+        para i=0 hasta 39 hacer
+          Esc(" ")
+        fin_para
+      fin_si
+      Saltodelinea()
+
+      Si t.fecha.anio = 2021 y t.fecha.mes = 8 entonces
+        ta.dia:= t.fecha.dia
+        ta.valortemp:= t.valortemp
+        Grabar(tempsal, ta)
+      fin_si
+
+      conttemptot:= conttemptot + 1
+      acutemptot:= acutemptot + t.valortemp
+
+    fin_mientras
+
+    conttempinf := conttempinf / conttemptot * 100 //reutilizando la variable para sacar el porcentaje
+    Esc("El porcentaje de temperaturas inferiores a 0 grados es de:", conttempinf)
+    acutemptot:= acutemptot / conttemptot //reutilizando
+    si acutemptot>50 entonces
+      Esc("ALERTA ROJA: ")
+    fin_si
+    Esc("el promedio de temperaturas es de ", acutemptot)
+
+    Cerrar(temp)
+    Cerrar(tempsal)
+fin_accion

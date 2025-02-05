@@ -1,0 +1,26 @@
+Accion generacion es
+  Ambiente
+    fecha = registro
+      anio: n(4)
+      mes: n(2)
+      dia: n(2)
+    fin_registro
+    temperaturas = registro
+      valortemp: (-30..120);
+      fechatoma: fecha
+    fin_registro
+    temp: archivo de temperaturas
+    t: temperaturas
+    cant: n(4)
+  Proceso
+    Crear(temp)
+    Esc("Ingrese la cantidad de datos a generar aleatoriamente")
+    Leer(cant)
+    Para i=1 hasta cant hacer
+      t.valortemp:= (rand() MOD 151) - 30
+      t.fechatoma.anio:=  rand() MOD 53 + 1970 //Rango de 1970 a 2022
+      t.fechatoma.mes:= rand() MOD 13
+      t.fechatoma.dia:= rand() MOD 32 //Se podría verificar que el día esté bien con el mes
+    fin_para
+    Cerrar(temp)
+fin_accion

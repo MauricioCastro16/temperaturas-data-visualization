@@ -1,0 +1,38 @@
+Accion carga es
+  Ambiente
+    fecha = registro
+      anio: n(4)
+      mes: n(2)
+      dia: n(2)
+    fin_registro
+    temperaturas = registro
+      valortemp: (-30..120);
+      fechatoma: fecha
+    fin_registro
+    temp: archivo de temperaturas
+    t: temperaturas
+    inganio: n(4)
+    ingmesdia: n(2)
+    ingvalor: (-30..120);
+    decision: boolean
+  Proceso
+    Crear(temp)
+    Repetir
+      Esc("Ingrese el año de la toma, en formato AAAA")
+      Leer(inganio)
+      t.fechatoma.anio:= inganio
+      Esc("Ingrese el mes de la toma, en formato MM")
+      Leer(ingmesdia)
+      t.fechatoma.mes:= ingmesdia
+      Esc("Ingrese el día de la toma, en formato DD")
+      Leer(ingmesdia)
+      t.fechatoma.dia:= ingmesdia
+      Esc("Ingrese el valor de la toma")
+      Leer(ingvalor)
+      t.valortemp:= ingvalor
+      Grabar(temp, t)
+      Esc("¿Desea ingresar otro valor? SI/NO")
+      Leer(decision)
+    Hasta que decision=Falso
+    Cerrar(temp)
+fin_accion
